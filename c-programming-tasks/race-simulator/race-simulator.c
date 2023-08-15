@@ -49,7 +49,7 @@ void printFirstPlaceAfterLap(struct Race race){
 
 	race.numberOfLaps = 6;
 
-	printf("After lap number %d\n First Place is: %s in the %s race car",race.currentLap, race.firstPlaceDriveName, race.firstPlaceRaceCarColor);
+	printf("After lap number %d\n First Place is: %s in the%s race car",race.currentLap, race.firstPlaceDriveName, race.firstPlaceRaceCarColor);
 	
 
 }
