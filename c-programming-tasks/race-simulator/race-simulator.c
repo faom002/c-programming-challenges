@@ -93,6 +93,8 @@ int main(int argc, char const* argv[]) {
     struct RaceCar car1 = {"Bob", "Yellow", 0};
     struct RaceCar car2 = {"Alice", "Blue", 0};
 
+    
+
     race.numberOfLaps = 6;
 
     startRace(&race, &car1, &car2);
