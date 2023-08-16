@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // void* malloc(size_t s);
 // void free(void* ptr);
@@ -19,27 +20,37 @@ int main(void)
 
     // malloc returns a void* to n * 4 bytes of memory
 
-    int *ptr; // indeterminate pointer
+    // int *ptr; // indeterminate pointer
 
-    // here im saying that if the given N from scanf * sizeof int which is 4 then point to this memory adress for 40 byte size.
+    // here im saying that if the given N from scanf * sizeof int which is 4 bytes then point to this memory adress for 40 byte size.
     // it can  only store then 10 elements which because 40 / 4 (int bytesize)  
-    int *arr = malloc(n * sizeof(int));
+    char *arr = malloc(n * sizeof(char));
     // int arr[N];
+
+        strcpy(arr, "jason");
 
     // int arr[3];  more or less equivalent to
     // int _0; int _1; int _2;
 
-    // Assignment:
-    // Make this code work even if N isn't given, i.e. if you have to read the
-    // inputs one by one, without knowing how many there are in advance.
-    // Tip: this probably involves using realloc in addition to malloc
+    
+        arr = (char *)realloc(arr, 5);
+        strcat(arr, ".com");
 
-    for (int i = 0; i < n; ++i)
-    {
+
         // scanf("%d", arr + i);
-        scanf("%d", &arr[i]);
-    }
+        printf("%s\n", arr);
 
     // the arr is freed here
     free(arr);
+
+    arr = NULL; 
 }
+
+
+ // if (!arr)
+    // {
+
+    // perror("Memory allocation failed");
+    // exit(EXIT_FAILURE); // it failed the allocation
+
+    // }
