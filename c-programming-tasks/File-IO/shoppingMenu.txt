@@ -1,0 +1,4 @@
+price: 23.30$ piecesLeft: 10	
+ price: 40.00$ piecesLeft: 20	
+ price: 10.00$ piecesLeft: 40	
+ 
