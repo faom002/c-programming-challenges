@@ -57,6 +57,7 @@ int menuList(FILE *shopFile){
     		printf("%s\n", buffer);
 
     token =  strtok(buffer, " ");
+
         while (token != NULL) {
         if (sscanf(token, "%d", &numberOfPiecesLeft) == 1 && strchr(token, '.') == NULL) {
 
