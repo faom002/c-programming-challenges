@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define BUFFERSIZE 500
+#define NUMBEROFPIECESLEFTEXTRACTED 3
+
 // printing instruction for user
 void menus(){
 	
@@ -25,13 +28,13 @@ int menuList(FILE *shopFile){
 	shopFile = fopen("shoppingMenu.txt", "w+");
 
 	// a char buffer for keeping our items in
-	char buffer[500];
+	char buffer[BUFFERSIZE];
 
 	// offset variable to keep track of elements inside buffer array 
 	// numberOfPiecesLeft for extracting the pieces left from text shopping
 	int offset = 0,  input = 0, i = 0, j = 0;
 
-	int numberOfPiecesLeftExtracted[3], mozarella = 0,hotSauce = 0, pepper = 0;
+	int numberOfPiecesLeftExtracted[NUMBEROFPIECESLEFTEXTRACTED], mozarella = 0,hotSauce = 0, pepper = 0;
 
 
 	// a token for not inlcuding the price values
@@ -145,6 +148,8 @@ int menuList(FILE *shopFile){
     						
     						printf("we still have %d pepper:\n", pepper);
     						
+    					}else {
+    						printf("not a valid input\n");
     					}
 
     					if (pepper <= 0 || hotSauce <= 0 || mozarella <= 0 )
@@ -152,7 +157,7 @@ int menuList(FILE *shopFile){
 								offset += sprintf(buffer + offset, "price: %.2lf$ piecesLeft: %d\n ", item1.price[j] , hotSauce);
 								offset += sprintf(buffer + offset, "price: %.2lf$ piecesLeft: %d\n ", item1.price[j] , mozarella);
 								offset += sprintf(buffer + offset, "price: %.2lf$ piecesLeft: %d\n ", item1.price[j] , pepper);
-									printf("you have bought all of the items");
+									printf("you have bought all of the items\n");
     							break;
     						}
     					

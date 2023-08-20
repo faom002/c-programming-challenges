@@ -46,8 +46,9 @@ int main(void) {
             if (strcmp(start, egyptCat) == 0)
             {
                 // Extract and print the fact
-            *end = '\0'; // Null-terminate the fact
-            printf("Cat Fact: %s\n", start);
+                *end = '\0'; // Null-terminate the fact
+                printf("Cat Fact: %s\n", start);
+                
             }
 
             
