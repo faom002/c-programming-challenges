@@ -11,6 +11,8 @@ extern MYSQL_ROW row;
 char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
 
+void *errorchecked_malloc(unsigned int);
+
 void update_rows() {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
@@ -54,11 +56,8 @@ extern void show_books(void) {
     printf("Type yes/no: ");
 
     inputAccept = malloc(4 * sizeof(char));
-
-    if (inputAccept == NULL) {
-        fprintf(stderr, "Memory allocation error\n");
-        exit(1);
-    }
+ 
+      errorchecked_malloc(*inputAccept);
 
     scanf("%s", inputAccept);
 
@@ -84,4 +83,14 @@ extern void show_books(void) {
 
     free(inputAccept);
     mysql_free_result(res);
+}
+
+void *errorchecked_malloc(unsigned int size) { // An error-checked malloc() function
+void *ptr;
+ptr = malloc(size);
+if(ptr == NULL) {
+fprintf(stderr, "Error: could not allocate heap memory.\n");
+exit(-1);
+}
+return ptr;
 }
