@@ -13,7 +13,7 @@ int arrayOfBooks, input = 0;
 
 void *errorchecked_malloc(unsigned int);
 
-void update_rows() {
+void loan_a_book() {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks--;
@@ -37,7 +37,29 @@ void update_rows() {
     } 
 }
 
+void return_a_book(){
+      printf("Enter book ID to return (or any other input to exit): ");
+    if (scanf("%d", &input)) {
+        arrayOfBooks++;
 
+           if (arrayOfBooks < 0) {
+            printf("No more books left for that row\n");
+            exit(1);  
+        }else {
+            printf("Remaining books: %d\n", arrayOfBooks);
+        }
+
+        char updateQuery[100];
+        snprintf(updateQuery, sizeof(updateQuery), "UPDATE books SET availiblebooks = %d WHERE id = %d", arrayOfBooks, input);
+        if (mysql_query(conn, updateQuery)) {
+            fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
+            exit(1);
+        }
+     
+    }else {
+        exit(0);
+    } 
+}
 
 extern void show_books(void) {
     if (mysql_query(conn, "SELECT * FROM books")) {
@@ -53,15 +75,16 @@ extern void show_books(void) {
     }
 
     printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
-    printf("Type yes/no: ");
+    printf("Type (yes/no) for return a book: ");
 
     inputAccept = malloc(4 * sizeof(char));
- 
+     
       errorchecked_malloc(*inputAccept);
 
     scanf("%s", inputAccept);
 
     char *accept = "yes";
+    char *reject = "no";
 
     while (1) {
     
@@ -74,10 +97,10 @@ extern void show_books(void) {
         }
 
 
-            update_rows();
+            loan_a_book();
 
-    }else {
-        break;
+    }else if(strcmp(inputAccept,reject) == 0) {
+            return_a_book();
     }
     }
 
