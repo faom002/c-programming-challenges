@@ -13,7 +13,7 @@ int arrayOfBooks, input = 0;
 
 void *errorchecked_malloc(unsigned int);
 
-void loan_a_book() {
+void loan_a_book(void) {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks--;
@@ -37,7 +37,7 @@ void loan_a_book() {
     } 
 }
 
-void return_a_book(){
+void return_a_book(void){
       printf("Enter book ID to return (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks++;
@@ -61,6 +61,40 @@ void return_a_book(){
     } 
 }
 
+void register_a_user(void){
+   printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
+            printf("in order for you to loan a book for yourself, you have to register :)\n");
+            printf("type yes/no for registering\n");
+
+
+            char *inputYes = "yes", *input = NULL;
+
+                input = malloc(4 *sizeof(char));
+
+
+     
+                    
+                    scanf("%s", input);
+
+
+
+
+            if (strcmp(input, inputYes) == 0)
+            {
+                     char insertQuery[100];
+            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (username, password) VALUES ('%s', %d)", "ddddd", 21);
+                    if (mysql_query(conn, insertQuery)) {
+            fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
+            exit(1);
+        }
+            }else {
+                exit(1);
+            }
+
+            free(input);
+
+}   
+
 extern void show_books(void) {
     if (mysql_query(conn, "SELECT * FROM books")) {
         fprintf(stderr, "Query error: %s\n", mysql_error(conn));
@@ -74,8 +108,9 @@ extern void show_books(void) {
         exit(1);
     }
 
-    printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
-    printf("Type (yes/no) for return a book: ");
+  register_a_user();
+
+   printf("Type (yes/no) for return a book: ");
 
     inputAccept = malloc(4 * sizeof(char));
      
@@ -85,6 +120,10 @@ extern void show_books(void) {
 
     char *accept = "yes";
     char *reject = "no";
+
+  
+
+ 
 
     while (1) {
     
