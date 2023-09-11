@@ -22,8 +22,8 @@ int main() {
     // the while loop that loops as longs as input is not (1) so you can contiue typing
     while (scanf("%c", &input) && input != '1') {
         
-        printf("%d\n", size);    
-            printf("%d\n", capacity);   
+        //printf("%d\n", size);    
+            //printf("%d\n", capacity);   
 
         // checking to see if size is the same as cappacity
         if (size == capacity) {
