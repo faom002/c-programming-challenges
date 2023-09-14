@@ -36,6 +36,7 @@ bool write_binary_file() {
     return true;
 }
 
+
 bool read_binary_file() {
     FILE *file = fopen("newProgram.bin", "rb");
 
@@ -67,6 +68,9 @@ bool read_binary_file() {
 }
 
 int main(void) {
+
+  // bool functions return values so we can use them in if statements
+
     if (write_binary_file()) {
         if (read_binary_file()) {
             printf("Binary file operations completed successfully.\n");
