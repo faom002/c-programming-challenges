@@ -6,7 +6,11 @@
     // - also change the solution that it works with int/float instead of char
     //   because char being just one byte large is making the task simpler than it needs to be
     // - tip: memcpy might also be of help
+    
 
+    // assigment  completed for this month
+
+    
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
