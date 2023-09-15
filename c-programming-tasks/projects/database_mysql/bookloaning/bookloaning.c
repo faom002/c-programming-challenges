@@ -67,22 +67,34 @@ void register_a_user(void){
             printf("type yes/no for registering\n");
 
 
-            char *inputYes = "yes", *input = NULL;
-
-                input = malloc(4 *sizeof(char));
-
-
+            char *inputYes = "yes", *input = NULL, *userNameInput = NULL;
+            
+                int *userPasswordInput = NULL;
+                
+              input = malloc(4 *sizeof(char));
+              userNameInput = malloc(16 * sizeof(char));    
+              userPasswordInput = malloc(16 * sizeof(int));
      
                     
                     scanf("%s", input);
 
+              printf("write your username");
+              
+             
 
+              scanf("%s", userNameInput);
+              
+              printf("and password");
 
+              scanf("%d",userPasswordInput);
+              
+              
+  
 
             if (strcmp(input, inputYes) == 0)
             {
                      char insertQuery[100];
-            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (username, password) VALUES ('%s', %d)", "ddddd", 21);
+            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (username, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
                     if (mysql_query(conn, insertQuery)) {
             fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
             exit(1);
@@ -90,8 +102,11 @@ void register_a_user(void){
             }else {
                 exit(1);
             }
-
+            
+             free(userPasswordInput); 
             free(input);
+  
+            free(userNameInput);
 
 }   
 
