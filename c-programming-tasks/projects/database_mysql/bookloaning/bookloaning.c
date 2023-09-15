@@ -94,7 +94,7 @@ void register_a_user(void){
             if (strcmp(input, inputYes) == 0)
             {
                      char insertQuery[100];
-            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (username, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
+            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
                     if (mysql_query(conn, insertQuery)) {
             fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
             exit(1);

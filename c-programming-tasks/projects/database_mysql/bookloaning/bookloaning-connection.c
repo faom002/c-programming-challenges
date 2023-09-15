@@ -1,5 +1,6 @@
 #include <mysql/mysql.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 MYSQL *conn;	
 MYSQL_RES *res;
