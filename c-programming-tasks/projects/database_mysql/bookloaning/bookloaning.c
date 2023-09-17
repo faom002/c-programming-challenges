@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
 #include <stdbool.h>
 #include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -11,7 +12,7 @@ extern MYSQL_ROW row;
 char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
 
-void *errorchecked_malloc(unsigned int);
+void errorchecked_malloc(char *inputAccept);
 
 void loan_a_book(void) {
     printf("Enter book ID to loan (or any other input to exit): ");
@@ -32,9 +33,12 @@ void loan_a_book(void) {
             exit(1);
         }
      
-    }else {
-        exit(0);
-    } 
+    }
+
+
+    free(inputAccept);
+        
+    
 }
 
 void return_a_book(void){
@@ -56,59 +60,56 @@ void return_a_book(void){
             exit(1);
         }
      
-    }else {
-        exit(0);
-    } 
-}
+    }
 
-void register_a_user(void){
-   printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
-            printf("in order for you to loan a book for yourself, you have to register :)\n");
-            printf("type yes/no for registering\n");
+    free(inputAccept);
+    }
 
+void register_a_user(void) {
+    printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
+    printf("In order for you to loan a book for yourself, you have to register :)\n");
+    printf("Type yes/no for registering\n");
 
-            char *inputYes = "yes", *input = NULL, *userNameInput = NULL;
-            
-                int *userPasswordInput = NULL;
-                
-              input = malloc(4 *sizeof(char));
-              userNameInput = malloc(16 * sizeof(char));    
-              userPasswordInput = malloc(16 * sizeof(int));
-     
-                    
-                    scanf("%s", input);
+    char *inputYes = "yes", *input = NULL, *userNameInput = NULL, *inputNo = "no";
+    int *userPasswordInput = NULL;
 
-              printf("write your username");
-              
-             
+    input = malloc(4 * sizeof(char));
+    userNameInput = malloc(16 * sizeof(char));
+    userPasswordInput = malloc( 3 * sizeof(int)); // Just allocate enough for one integer
 
-              scanf("%s", userNameInput);
-              
-              printf("and password");
+    if (scanf("%3s", input) != 1) {
+        printf("Error reading input\n");
+        free(input);
+        exit(1);
+    }
 
-              scanf("%d",userPasswordInput);
-              
-              
-  
+    if (strcmp(input, inputYes) == 0) {
+        printf("Write your username\n");
+        scanf("%s", userNameInput);
 
-            if (strcmp(input, inputYes) == 0)
-            {
-                     char insertQuery[100];
-            snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
-                    if (mysql_query(conn, insertQuery)) {
+        printf("And password (as an integer)\n");
+
+        scanf("%d", userPasswordInput);
+
+        char insertQuery[100];
+        snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
+        if (mysql_query(conn, insertQuery)) {
             fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
             exit(1);
         }
-            }else {
-                exit(1);
-            }
-            
-             free(userPasswordInput); 
-            free(input);
-  
-            free(userNameInput);
+    } else if (strcmp(input, inputNo) == 0) {
+        printf("No books on you then | :(- |\n");
+    } else {
+        printf("Invalid input\n");
+    }
 
-}   
+    free(userPasswordInput);
+    free(input);
+    free(userNameInput);
+}
+  
+
+
 
 extern void show_books(void) {
     if (mysql_query(conn, "SELECT * FROM books")) {
@@ -123,22 +124,26 @@ extern void show_books(void) {
         exit(1);
     }
 
-  register_a_user();
+   register_a_user();
 
-   printf("Type (yes/no) for return a book: ");
+   
 
     inputAccept = malloc(4 * sizeof(char));
      
-      errorchecked_malloc(*inputAccept);
+    
+    errorchecked_malloc(inputAccept);
 
-    scanf("%s", inputAccept);
+
+
+
+  
 
     char *accept = "yes";
     char *reject = "no";
 
   
 
- 
+ printf("Type (yes) to loan a book | (no) for return a book: \n");
 
     while (1) {
     
@@ -155,6 +160,7 @@ extern void show_books(void) {
 
     }else if(strcmp(inputAccept,reject) == 0) {
             return_a_book();
+
     }
     }
 
@@ -162,12 +168,11 @@ extern void show_books(void) {
     mysql_free_result(res);
 }
 
-void *errorchecked_malloc(unsigned int size) { // An error-checked malloc() function
-void *ptr;
-ptr = malloc(size);
-if(ptr == NULL) {
-fprintf(stderr, "Error: could not allocate heap memory.\n");
-exit(-1);
+void errorchecked_malloc(char *inputAccept) { // An error-checked malloc() function
+if (scanf("%3s", inputAccept) != 1) {
+    fprintf(stderr, "Error reading input\n");
+    free(inputAccept);
+    exit(1);
 }
-return ptr;
+    exit(0);
 }
