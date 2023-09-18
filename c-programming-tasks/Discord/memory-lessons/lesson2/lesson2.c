@@ -60,27 +60,33 @@ bool write_binary_file() {
 
 bool read_binary_file() {
     
+    // opening binary file for reading
     FILE *file = fopen("newProgram.bin", "rb");
 
+    // checking if the file is not empty
     if (file == NULL) {
         perror("Error opening binary file for reading");
         return false;
     }
 
-    
+    // the data we want to write 
     int data[5];
     
+    // setting up length of data inside of num elements
     size_t num_elements = sizeof(data) / sizeof(data[0]);
 
     // Read the binary data from the file
     size_t elements_read = fread(data, sizeof(data[0]), num_elements, file);
 
+    // closing the file
     fclose(file);
 
+    // actually comparing the elements read from file to num elements to see comparisons
     if (elements_read != num_elements) {
         printf("Error reading data from the binary file\n");
         return false;
     }
+
 
     printf("Data read from binary file: ");
     
