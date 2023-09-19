@@ -12,7 +12,7 @@ extern MYSQL_ROW row;
 char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
 
-void errorchecked_malloc(char *inputAccept);
+
 
 void loan_a_book(void) {
     printf("Enter book ID to loan (or any other input to exit): ");
@@ -85,12 +85,25 @@ void register_a_user(void) {
 
     if (strcmp(input, inputYes) == 0) {
         printf("Write your username\n");
-        scanf("%s", userNameInput);
+        
+        if(scanf("%8s", userNameInput) != 1){
+            printf("Error reading username input \n");
+            free(userNameInput);
+            exit(1);
+        }else {
+        
+        
 
         printf("And password (as an integer)\n");
-
-        scanf("%d", userPasswordInput);
-
+            
+         if ( scanf("%6d", userPasswordInput) != 1)
+            {
+                printf("Error reading userPasswordInput \n");
+                free(userPasswordInput);
+                exit(1);
+            } 
+            
+        }
         char insertQuery[100];
         snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
         if (mysql_query(conn, insertQuery)) {
@@ -99,6 +112,7 @@ void register_a_user(void) {
         }
     } else if (strcmp(input, inputNo) == 0) {
         printf("No books on you then | :(- |\n");
+        exit(0);
     } else {
         printf("Invalid input\n");
     }
@@ -126,12 +140,16 @@ extern void show_books(void) {
 
    register_a_user();
 
-   
+    printf("Type (yes) to loan a book | (no) for return a book: \n");
 
     inputAccept = malloc(4 * sizeof(char));
      
     
-    errorchecked_malloc(inputAccept);
+    if (scanf("%3s", inputAccept) != 1) {
+    fprintf(stderr, "Error reading input\n");
+    free(inputAccept);
+    exit(1);
+    }
 
 
 
@@ -143,7 +161,7 @@ extern void show_books(void) {
 
   
 
- printf("Type (yes) to loan a book | (no) for return a book: \n");
+
 
     while (1) {
     
@@ -168,11 +186,3 @@ extern void show_books(void) {
     mysql_free_result(res);
 }
 
-void errorchecked_malloc(char *inputAccept) { // An error-checked malloc() function
-if (scanf("%3s", inputAccept) != 1) {
-    fprintf(stderr, "Error reading input\n");
-    free(inputAccept);
-    exit(1);
-}
-    exit(0);
-}
