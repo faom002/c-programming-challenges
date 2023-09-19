@@ -13,7 +13,7 @@ char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
 
 
-
+//  find out why i cant select book 1
 void loan_a_book(void) {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
