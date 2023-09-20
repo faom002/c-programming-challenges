@@ -36,7 +36,7 @@ void loan_a_book(void) {
     }
 
 
-    free(inputAccept);
+ 
         
     
 }
@@ -62,7 +62,6 @@ void return_a_book(void){
      
     }
 
-    free(inputAccept);
     }
 
 void register_a_user(void) {
@@ -115,6 +114,7 @@ void register_a_user(void) {
         exit(0);
     } else {
         printf("Invalid input\n");
+        exit(1);
     }
 
     free(userPasswordInput);
