@@ -64,64 +64,54 @@ void return_a_book(void){
 
     }
 
-void register_a_user(void) {
+void register_a_user() {
     printf("Hello there and welcome to our library. Would you like to check out our book collection?\n");
     printf("In order for you to loan a book for yourself, you have to register :)\n");
-    printf("Type yes/no for registering\n");
+    printf("Type 'yes' or 'no' to register\n");
 
-    char *inputYes = "yes", *input = NULL, *userNameInput = NULL, *inputNo = "no";
-    int *userPasswordInput = NULL;
+    char input[10];  // Allocate enough space for longer input.
+    char userNameInput[32];  // Allocate enough space for longer usernames.
+    char passwordInput[64];  // Allocate enough space for hashed passwords.
 
-    input = malloc(4 * sizeof(char));
-    userNameInput = malloc(16 * sizeof(char));
-    userPasswordInput = malloc( 3 * sizeof(int)); // Just allocate enough for one integer
-
-    if (scanf("%3s", input) != 1) {
+    if (scanf("%9s", input) != 1) {
         printf("Error reading input\n");
-        free(input);
         exit(1);
     }
 
-    if (strcmp(input, inputYes) == 0) {
+    if (strcmp(input, "yes") == 0) {
         printf("Write your username\n");
         
-        if(scanf("%8s", userNameInput) != 1){
-            printf("Error reading username input \n");
-            free(userNameInput);
+        if(scanf("%31s", userNameInput) != 1){
+            printf("Error reading username input\n");
             exit(1);
-        }else {
-        
-        
-
-        printf("And password (as an integer)\n");
-            
-         if ( scanf("%6d", userPasswordInput) != 1)
-            {
-                printf("Error reading userPasswordInput \n");
-                free(userPasswordInput);
-                exit(1);
-            } 
-            
         }
-        char insertQuery[100];
-        snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) VALUES ('%s', %d)", userNameInput, *userPasswordInput);
+
+        printf("And password (as a string)\n");
+            
+        if (scanf("%63s", passwordInput) != 1) {
+            printf("Error reading password input\n");
+            exit(1);
+        }
+        
+        // TODO: Hash and salt the passwordInput before storing it in the database using a secure hashing library (e.g., bcrypt).
+
+        // Create and execute the SQL query
+        char insertQuery[256];
+        snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) SELECT '%s', '%s' WHERE NOT EXISTS (SELECT 1 FROM users WHERE personname = '%s')", userNameInput, passwordInput, userNameInput);
+
         if (mysql_query(conn, insertQuery)) {
             fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
             exit(1);
         }
-    } else if (strcmp(input, inputNo) == 0) {
-        printf("No books on you then | :(- |\n");
-        exit(0);
+
+        printf("User registered successfully!\n");
+
+    } else if (strcmp(input, "no") == 0) {
+        printf("No books for you then :(-\n");
     } else {
         printf("Invalid input\n");
-        exit(1);
     }
-
-    free(userPasswordInput);
-    free(input);
-    free(userNameInput);
 }
-  
 
 
 
