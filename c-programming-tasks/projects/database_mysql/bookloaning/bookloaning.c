@@ -41,6 +41,68 @@ void loan_a_book(void) {
     
 }
 
+
+
+    void login_user(void) {
+    printf("Login to loan a book\n");
+    printf("Enter the username: ");
+    
+    char userNameInput[32];
+    if (scanf("%31s", userNameInput) != 1) {
+        printf("Error reading username input\n");
+        exit(1);
+    }
+
+    printf("Enter the password: ");
+    
+    char passwordInput[64];
+    if (scanf("%63s", passwordInput) != 1) {
+        printf("Error reading password input\n");
+        exit(1);
+    }
+    
+    // Hash the entered password (you should use a secure hashing library like bcrypt)
+    // For demonstration purposes, we'll assume passwordInput is already hashed.
+    char hashedInputPassword[64];  // Assuming passwordInput is already hashed.
+    strcpy(hashedInputPassword, passwordInput);
+
+    // Create and execute the SQL query to fetch the hashed password for the entered username
+    char selectQuery[256];
+    snprintf(selectQuery, sizeof(selectQuery), "SELECT password FROM users WHERE personname = '%s'", userNameInput);
+
+    if (mysql_query(conn, selectQuery)) {
+        fprintf(stderr, "Select query error: %s\n", mysql_error(conn));
+        exit(1);
+    }
+
+    MYSQL_RES *result = mysql_store_result(conn);
+    if (!result) {
+        fprintf(stderr, "Error fetching result: %s\n", mysql_error(conn));
+        exit(1);
+    }
+
+    // Check if the username exists in the database
+    if (mysql_num_rows(result) == 0) {
+        printf("Invalid username\n");
+        mysql_free_result(result);
+        exit(1);
+    }
+
+    MYSQL_ROW row = mysql_fetch_row(result);
+    char storedPassword[64];
+    strcpy(storedPassword, row[0]);
+
+    mysql_free_result(result);
+
+    // Compare the hashed input password with the stored hashed password
+    if (strcmp(hashedInputPassword, storedPassword) == 0) {
+        printf("User is real. Login successful!\n");
+    } else {
+        printf("Invalid password\n");
+    }
+}
+
+
 void return_a_book(void){
       printf("Enter book ID to return (or any other input to exit): ");
     if (scanf("%d", &input)) {
@@ -108,8 +170,10 @@ void register_a_user() {
 
     } else if (strcmp(input, "no") == 0) {
         printf("No books for you then :(-\n");
+        exit(1);
     } else {
         printf("Invalid input\n");
+        exit(1);
     }
 }
 
@@ -129,6 +193,8 @@ extern void show_books(void) {
     }
 
    register_a_user();
+
+   login_user();
 
     printf("Type (yes) to loan a book | (no) for return a book: \n");
 
