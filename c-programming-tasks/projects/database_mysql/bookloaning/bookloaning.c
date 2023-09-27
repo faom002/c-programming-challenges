@@ -43,11 +43,11 @@ void loan_a_book(void) {
 
 
 
-    void login_user(void) {
+    void login_user(char *userNameInput) {
     printf("Login to loan a book\n");
     printf("Enter the username: ");
     
-    char userNameInput[32];
+
     if (scanf("%31s", userNameInput) != 1) {
         printf("Error reading username input\n");
         exit(1);
@@ -100,6 +100,8 @@ void loan_a_book(void) {
     } else {
         printf("Invalid password\n");
     }
+
+    
 }
 
 
@@ -180,6 +182,9 @@ void register_a_user() {
 
 
 extern void show_books(void) {
+
+    char userNameInput[32];
+
     if (mysql_query(conn, "SELECT * FROM books")) {
         fprintf(stderr, "Query error: %s\n", mysql_error(conn));
         exit(1);
@@ -194,7 +199,7 @@ extern void show_books(void) {
 
    register_a_user();
 
-   login_user();
+   login_user(userNameInput);
 
     printf("Type (yes) to loan a book | (no) for return a book: \n");
 
@@ -221,6 +226,8 @@ extern void show_books(void) {
 
     while (1) {
     
+    printf("current user logged in %s\n", userNameInput);
+
     if (strcmp(inputAccept, accept) == 0) {
         while ((row = mysql_fetch_row(res)) != NULL) {
             printf("Book ID: %s, Book Name: %s, Author: %s, Available: %s\n", row[0], row[1], row[2], row[3]);
