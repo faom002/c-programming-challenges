@@ -18,7 +18,7 @@ CREATE DATABASE bookloaning;
 CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT PRIMARY KEY, bookname VARCHAR(255), authorname VARCHAR(100), availiblebooks INT);
 
 -- create the table for users that have loaned a book
-CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, personname VARCHAR(100), password INT);
+CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, personname VARCHAR(100), password INT, booksloaned INT);
 
 
 -- insert into book table

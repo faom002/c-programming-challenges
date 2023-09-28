@@ -14,7 +14,7 @@ int arrayOfBooks, input = 0;
 
 
 //  find out why i cant select book 1
-void loan_a_book(void) {
+void loan_a_book(char *userNameInput) {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks--;
@@ -26,12 +26,23 @@ void loan_a_book(void) {
             printf("Remaining books: %d\n", arrayOfBooks);
         }
 
-        char updateQuery[100];
-        snprintf(updateQuery, sizeof(updateQuery), "UPDATE books SET availiblebooks = %d WHERE id = %d", arrayOfBooks, input);
-        if (mysql_query(conn, updateQuery)) {
+        char updateBooksQuery[100];
+        snprintf(updateBooksQuery, sizeof(updateBooksQuery), "UPDATE books SET availiblebooks = %d WHERE id = %d", arrayOfBooks, input);
+        if (mysql_query(conn, updateBooksQuery)) {
             fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
             exit(1);
         }
+
+
+        char updateUserBooksQuery[100];
+        snprintf(updateUserBooksQuery, sizeof(updateUserBooksQuery), "UPDATE users SET booksloaned = %d WHERE personname = %s", arrayOfBooks ,userNameInput);
+
+        if (mysql_query(conn, updateUserBooksQuery)) {
+            fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
+            exit(1);
+        }
+
+
      
     }
 
@@ -161,8 +172,7 @@ void register_a_user() {
 
         // Create and execute the SQL query
         char insertQuery[256];
-        snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password) SELECT '%s', '%s' WHERE NOT EXISTS (SELECT 1 FROM users WHERE personname = '%s')", userNameInput, passwordInput, userNameInput);
-
+        snprintf(insertQuery, sizeof(insertQuery), "INSERT INTO users (personname, password, booksloaned) VALUES ('%s', '%s', 0) ON DUPLICATE KEY UPDATE personname=personname", userNameInput, passwordInput);
         if (mysql_query(conn, insertQuery)) {
             fprintf(stderr, "Insert query error: %s\n", mysql_error(conn));
             exit(1);
@@ -237,7 +247,7 @@ extern void show_books(void) {
         }
 
 
-            loan_a_book();
+            loan_a_book(userNameInput);
 
     }else if(strcmp(inputAccept,reject) == 0) {
             return_a_book();
