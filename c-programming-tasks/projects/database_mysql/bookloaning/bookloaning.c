@@ -33,10 +33,8 @@ void loan_a_book(char *userNameInput) {
             exit(1);
         }
 
-
         char updateUserBooksQuery[100];
-        snprintf(updateUserBooksQuery, sizeof(updateUserBooksQuery), "UPDATE users SET booksloaned = %d WHERE personname = %s", arrayOfBooks ,userNameInput);
-
+        snprintf(updateUserBooksQuery, sizeof(updateUserBooksQuery), "UPDATE users SET booksloaned = booksloaned + 1 WHERE personname = '%s'", userNameInput);
         if (mysql_query(conn, updateUserBooksQuery)) {
             fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
             exit(1);
