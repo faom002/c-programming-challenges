@@ -1,7 +1,7 @@
 -- make sure to open up mysql workbench
 
 -- create a user for bookloaningsystem
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'nerd123';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'StrongPassword123!';
 
 -- grant privelage to users
 GRANT ALL PRIVILEGES ON books.* TO 'admin'@'localhost';

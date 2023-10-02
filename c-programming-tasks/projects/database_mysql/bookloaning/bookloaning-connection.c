@@ -17,7 +17,7 @@ int main(void)
 	// my connection details 
 	char *server = "localhost";
     char *user = "admin";     
-    char *password = "nerd123";  
+    char *password = "StrongPassword123!";  
     char *database = "bookloaning";
 
 
