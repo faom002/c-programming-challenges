@@ -114,12 +114,12 @@ void loan_a_book(char *userNameInput) {
 }
 
 
-void return_a_book(void){
+void return_a_book(char *userNameInput){
       printf("Enter book ID to return (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks++;
 
-           if (arrayOfBooks < 0) {
+           if (arrayOfBooks >= 10) {
             printf("No more books left for that row\n");
             exit(1);  
         }else {
@@ -132,6 +132,15 @@ void return_a_book(void){
             fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
             exit(1);
         }
+
+
+         char updateUserBooksQuery[100];
+        snprintf(updateUserBooksQuery, sizeof(updateUserBooksQuery), "UPDATE users SET booksloaned = booksloaned - 1 WHERE personname = '%s'", userNameInput);
+        if (mysql_query(conn, updateUserBooksQuery)) {
+            fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
+            exit(1);
+        }
+
      
     }
 
@@ -248,7 +257,7 @@ extern void show_books(void) {
             loan_a_book(userNameInput);
 
     }else if(strcmp(inputAccept,reject) == 0) {
-            return_a_book();
+            return_a_book(userNameInput);
 
     }
     }
