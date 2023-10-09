@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// connection for mysql 
 extern MYSQL *conn;
 extern MYSQL_RES *res;
 extern MYSQL_ROW row;
@@ -13,31 +14,46 @@ char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
 
 
-//  find out why i cant select book 1
+// this method takes in username and loans a book
 void loan_a_book(char *userNameInput) {
     printf("Enter book ID to loan (or any other input to exit): ");
     if (scanf("%d", &input)) {
         arrayOfBooks--;
 
+        // if books is zero then there are no more books left
            if (arrayOfBooks < 0) {
             printf("No more books left for that row\n");
             exit(1);  
+
         }else {
+
+            // else keep on printing ramaining books left
             printf("Remaining books: %d\n", arrayOfBooks);
+
         }
 
+        // update the books query in our database
         char updateBooksQuery[100];
+
+        // copy the query into update books query abd send it to table books
         snprintf(updateBooksQuery, sizeof(updateBooksQuery), "UPDATE books SET availiblebooks = %d WHERE id = %d", arrayOfBooks, input);
         if (mysql_query(conn, updateBooksQuery)) {
+
+            // catch error for query
             fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
             exit(1);
+
         }
 
+        // update current user bookloan register 
         char updateUserBooksQuery[100];
         snprintf(updateUserBooksQuery, sizeof(updateUserBooksQuery), "UPDATE users SET booksloaned = booksloaned + 1 WHERE personname = '%s'", userNameInput);
         if (mysql_query(conn, updateUserBooksQuery)) {
+
+            // catch error if query doesnt go so well
             fprintf(stderr, "Update query error: %s\n", mysql_error(conn));
             exit(1);
+
         }
 
 
