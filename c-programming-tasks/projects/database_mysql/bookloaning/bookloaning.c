@@ -213,6 +213,15 @@ void register_a_user() {
   }
 }
 
+void display_books() {
+
+  while ((row = mysql_fetch_row(res)) != NULL) {
+    printf("Book ID: %s, Book Name: %s, Author: %s, Available: %s\n", row[0],
+           row[1], row[2], row[3]);
+    sscanf(row[3], "%d", &arrayOfBooks);
+  }
+}
+
 // show books availible function in database
 extern void show_books(void) {
 
@@ -257,15 +266,13 @@ extern void show_books(void) {
     printf("current user logged in %s\n", userNameInput);
 
     if (strcmp(inputAccept, accept) == 0) {
-      while ((row = mysql_fetch_row(res)) != NULL) {
-        printf("Book ID: %s, Book Name: %s, Author: %s, Available: %s\n",
-               row[0], row[1], row[2], row[3]);
-        sscanf(row[3], "%d", &arrayOfBooks);
-      }
+
+      display_books();
 
       loan_a_book(userNameInput);
 
     } else if (strcmp(inputAccept, reject) == 0) {
+      display_books();
       return_a_book(userNameInput);
     }
   }
