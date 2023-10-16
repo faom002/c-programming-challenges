@@ -1,7 +1,6 @@
 #include <mysql/mysql.h>
 #include <stdbool.h>
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -220,6 +219,19 @@ void display_books() {
            row[1], row[2], row[3]);
     sscanf(row[3], "%d", &arrayOfBooks);
   }
+}
+
+// think of a way to add all user option in a switch case function
+void user_choice(){
+    int choice = 0;
+
+    switch (choice) {
+        case 1:
+            register_a_user();
+        case 2:
+            login_user(char *userNameInput)
+
+    }
 }
 
 // show books availible function in database
