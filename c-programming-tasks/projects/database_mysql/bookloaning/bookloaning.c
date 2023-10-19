@@ -11,6 +11,8 @@ extern MYSQL_ROW row;
 
 char *inputAccept = NULL;
 int arrayOfBooks, input = 0;
+  char userNameInput[32];
+
 
 // this method takes in username and loans a book
 void loan_a_book(char *userNameInput) {
@@ -222,22 +224,30 @@ void display_books() {
 }
 
 // think of a way to add all user option in a switch case function
-void user_choice(){
+void user_choice() {
     int choice = 0;
+
+    if (scanf("%d", &choice) != 1) {
+        fprintf(stderr, "Error reading input\n");
+        return;
+    }
 
     switch (choice) {
         case 1:
-            register_a_user();
+            loan_a_book(userNameInput);
+            break;
         case 2:
-            login_user(char *userNameInput)
-
+            return_a_book(userNameInput);
+            break;
+        default:
+            printf("Invalid choice. Please select a valid option.\n");
     }
 }
+
 
 // show books availible function in database
 extern void show_books(void) {
 
-  char userNameInput[32];
 
   if (mysql_query(conn, "SELECT * FROM books")) {
     fprintf(stderr, "Query error: %s\n", mysql_error(conn));
@@ -259,7 +269,7 @@ extern void show_books(void) {
   // store the user name and use in while
   login_user(userNameInput);
 
-  printf("Type (yes) to loan a book | (no) for return a book: \n");
+  printf("Type (1) to loan a book | (2) for return a book: \n");
 
   inputAccept = malloc(4 * sizeof(char));
 
@@ -270,22 +280,22 @@ extern void show_books(void) {
   }
 
   // option for user
-  char *accept = "yes";
-  char *reject = "no";
+  char *loanChoice = "1";
+  char *returnChoice = "2";
 
   while (1) {
 
     printf("current user logged in %s\n", userNameInput);
 
-    if (strcmp(inputAccept, accept) == 0) {
+    if (strcmp(inputAccept, loanChoice) == 0) {
 
       display_books();
 
-      loan_a_book(userNameInput);
+      user_choice();
 
-    } else if (strcmp(inputAccept, reject) == 0) {
+    } else if (strcmp(inputAccept, returnChoice) == 0) {
       display_books();
-      return_a_book(userNameInput);
+      user_choice();
     }
   }
 
